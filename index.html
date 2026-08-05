@@ -1,1179 +1,799 @@
 <!DOCTYPE html>
 <html lang="vi">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ZENO REGEDIT - CHIA SẺ FILE</title>
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
-    <style>
-        :root {
-            --bg-color: #0d0d12;
-            --panel-bg: #1a1a24;
-            --primary: #00ff88;
-            --discord: #5865F2;
-            --youtube: #FF0000;
-            --text: #ffffff;
-            --text-muted: #888899;
-        }
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta name="theme-color" content="#050816" />
+<title>ZENO REGEDIT | CHIA Sแบบ FILE</title>
+<style>
+  :root{
+    --bg:#050816;
+    --bg2:#0a1024;
+    --card:rgba(10,16,36,.72);
+    --stroke:rgba(255,255,255,.10);
+    --text:#f4f7ff;
+    --muted:#aeb8d8;
+    --accent:#7c5cff;
+    --accent2:#00d4ff;
+    --accent3:#25d366;
+    --danger:#ff5d7a;
+    --warning:#ffb84d;
+    --shadow:0 22px 70px rgba(0,0,0,.45);
+    --radius:24px;
+  }
 
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-        }
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{
+    margin:0;
+    color:var(--text);
+    font-family: Inter, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Arial, sans-serif;
+    background:
+      radial-gradient(circle at top left, rgba(124,92,255,.24), transparent 28%),
+      radial-gradient(circle at top right, rgba(0,212,255,.18), transparent 26%),
+      radial-gradient(circle at bottom center, rgba(37,211,102,.10), transparent 28%),
+      linear-gradient(180deg, #04060f 0%, #050816 45%, #03050a 100%);
+    min-height:100vh;
+    overflow-x:hidden;
+  }
 
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background-color: var(--bg-color);
-            color: var(--text);
-            line-height: 1.6;
-            display: flex;
-            justify-content: center;
-            padding: 20px;
-            background-image: radial-gradient(circle at 50% 0%, #1a1a24 0%, #0d0d12 70%);
-            min-height: 100vh;
-        }
+  #fx{
+    position:fixed;
+    inset:0;
+    width:100%;
+    height:100%;
+    z-index:-2;
+    opacity:.9;
+  }
 
-        .container {
-            width: 100%;
-            max-width: 650px;
-            margin-top: 30px;
-        }
+  .noise{
+    position:fixed;
+    inset:0;
+    pointer-events:none;
+    background-image:
+      linear-gradient(rgba(255,255,255,.03) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255,255,255,.03) 1px, transparent 1px);
+    background-size:120px 120px;
+    mask-image: radial-gradient(circle at center, black 40%, transparent 100%);
+    opacity:.12;
+    z-index:-1;
+  }
 
-        .header {
-            text-align: center;
-            margin-bottom: 30px;
-        }
+  .wrap{
+    width:min(1180px, calc(100% - 24px));
+    margin:0 auto;
+    padding:18px 0 50px;
+  }
 
-        .header h1 {
-            font-size: 3rem;
-            font-weight: 900;
-            letter-spacing: 2px;
-            color: var(--text);
-            text-shadow: 0 0 20px rgba(0, 255, 136, 0.4);
-            margin-bottom: 10px;
-        }
+  .topbar{
+    position:sticky;
+    top:12px;
+    z-index:40;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:14px;
+    padding:14px 16px;
+    border:1px solid var(--stroke);
+    border-radius:20px;
+    background:linear-gradient(180deg, rgba(9,14,28,.82), rgba(9,14,28,.52));
+    backdrop-filter: blur(16px);
+    box-shadow:var(--shadow);
+    margin-bottom:18px;
+  }
 
-        .header h1 span {
-            color: var(--primary);
-        }
+  .brand{
+    display:flex;
+    align-items:center;
+    gap:12px;
+    min-width:0;
+  }
 
-        .header p {
-            color: var(--text-muted);
-            font-size: 1.1rem;
-        }
+  .logo{
+    width:46px;
+    height:46px;
+    border-radius:16px;
+    display:grid;
+    place-items:center;
+    font-weight:900;
+    letter-spacing:.8px;
+    background:linear-gradient(135deg, var(--accent), var(--accent2));
+    box-shadow:
+      0 0 0 1px rgba(255,255,255,.06) inset,
+      0 10px 30px rgba(124,92,255,.30),
+      0 0 36px rgba(0,212,255,.16);
+  }
 
-        /* NÚT DISCORD NỔI BẬT */
-        .discord-banner {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            background: linear-gradient(135deg, #5865F2, #4752c4);
-            color: white;
-            padding: 20px;
-            border-radius: 12px;
-            text-decoration: none;
-            font-size: 1.2rem;
-            font-weight: bold;
-            margin-bottom: 40px;
-            box-shadow: 0 0 20px rgba(88, 101, 242, 0.6);
-            border: 2px solid rgba(255, 255, 255, 0.2);
-            animation: pulse 2s infinite;
-            transition: 0.3s;
-        }
+  .brand h1{
+    margin:0;
+    font-size:15px;
+    letter-spacing:.6px;
+    line-height:1.15;
+  }
 
-        .discord-banner:hover {
-            transform: scale(1.05);
-            box-shadow: 0 0 30px rgba(88, 101, 242, 0.9);
-        }
+  .brand p{
+    margin:4px 0 0;
+    color:var(--muted);
+    font-size:12px;
+    white-space:nowrap;
+    overflow:hidden;
+    text-overflow:ellipsis;
+    max-width:54vw;
+  }
 
-        .discord-banner i {
-            font-size: 1.8rem;
-            margin-right: 15px;
-        }
+  .pill{
+    display:inline-flex;
+    align-items:center;
+    gap:8px;
+    padding:10px 14px;
+    border-radius:999px;
+    border:1px solid rgba(0,212,255,.22);
+    background:rgba(0,212,255,.08);
+    color:#dff9ff;
+    font-size:13px;
+    font-weight:800;
+    white-space:nowrap;
+  }
 
-        @keyframes pulse {
-            0% { box-shadow: 0 0 0 0 rgba(88, 101, 242, 0.7); }
-            70% { box-shadow: 0 0 0 15px rgba(88, 101, 242, 0); }
-            100% { box-shadow: 0 0 0 0 rgba(88, 101, 242, 0); }
-        }
+  .hero{
+    display:grid;
+    grid-template-columns: 1.25fr .95fr;
+    gap:18px;
+    align-items:stretch;
+    margin-top:18px;
+  }
 
-        /* KHU VỰC XÁC MINH */
-        .section-box {
-            background-color: var(--panel-bg);
-            border-radius: 12px;
-            padding: 25px;
-            margin-bottom: 25px;
-            border: 1px solid #2a2a35;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
-        }
+  .panel{
+    background:linear-gradient(180deg, rgba(10,16,36,.88), rgba(10,16,36,.68));
+    border:1px solid var(--stroke);
+    border-radius:var(--radius);
+    box-shadow:var(--shadow);
+    overflow:hidden;
+  }
 
-        .section-title {
-            font-size: 1.3rem;
-            margin-bottom: 15px;
-            display: flex;
-            align-items: center;
-            border-bottom: 2px solid #2a2a35;
-            padding-bottom: 10px;
-        }
+  .hero-main{
+    padding:30px;
+    position:relative;
+  }
 
-        .section-title i {
-            margin-right: 10px;
-            color: var(--primary);
-        }
+  .hero-main:before{
+    content:"";
+    position:absolute;
+    inset:auto -10px -30px auto;
+    width:210px;
+    height:210px;
+    border-radius:50%;
+    background:radial-gradient(circle, rgba(124,92,255,.25), transparent 70%);
+    filter: blur(2px);
+    pointer-events:none;
+  }
 
-        .btn {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            width: 100%;
-            padding: 16px;
-            margin-bottom: 15px;
-            border-radius: 8px;
-            text-decoration: none;
-            font-weight: bold;
-            font-size: 1.1rem;
-            transition: all 0.3s ease;
-            cursor: pointer;
-            border: none;
-        }
+  .hero-main:after{
+    content:"";
+    position:absolute;
+    inset:0;
+    background:linear-gradient(115deg, transparent 0%, rgba(255,255,255,.03) 46%, transparent 58%);
+    transform:translateX(-60%);
+    animation:sheen 7s linear infinite;
+    pointer-events:none;
+  }
 
-        .btn i {
-            margin-right: 12px;
-            font-size: 1.3rem;
-        }
+  @keyframes sheen{
+    0%{transform:translateX(-70%)}
+    100%{transform:translateX(70%)}
+  }
 
-        .btn-youtube {
-            background-color: var(--youtube);
-            color: white;
-            box-shadow: 0 5px 15px rgba(255, 0, 0, 0.3);
-        }
+  .eyebrow{
+    display:inline-flex;
+    align-items:center;
+    gap:8px;
+    padding:8px 12px;
+    border-radius:999px;
+    background:rgba(124,92,255,.14);
+    border:1px solid rgba(124,92,255,.22);
+    color:#eadfff;
+    font-size:12px;
+    font-weight:900;
+    letter-spacing:.8px;
+    text-transform:uppercase;
+  }
 
-        .btn-youtube:hover {
-            background-color: #cc0000;
-            transform: translateY(-2px);
-        }
+  .title{
+    font-size:clamp(36px, 6vw, 68px);
+    line-height:1;
+    margin:16px 0 12px;
+    font-weight:1000;
+    letter-spacing:-.05em;
+    text-shadow:0 0 20px rgba(0,212,255,.12);
+  }
 
-        /* DANH MỤC FILE */
-        .btn-download {
-            background-color: #252533;
-            color: #fff;
-            border: 1px solid #3a3a45;
-            justify-content: space-between;
-            padding: 16px 20px;
-        }
+  .title .grad{
+    background:linear-gradient(90deg, #fff 0%, #c9d6ff 25%, #7cf2ff 55%, #fff 100%);
+    -webkit-background-clip:text;
+    background-clip:text;
+    color:transparent;
+    filter: drop-shadow(0 0 14px rgba(124,92,255,.15));
+  }
 
-        .btn-download:hover {
-            background-color: var(--primary);
-            color: #000;
-            border-color: var(--primary);
-            box-shadow: 0 0 20px rgba(0, 255, 136, 0.5);
-            transform: translateY(-3px);
-        }
+  .desc{
+    margin:0;
+    max-width:70ch;
+    color:var(--muted);
+    line-height:1.85;
+    font-size:16px;
+  }
 
-        .btn-download:hover i {
-            color: #000;
-        }
+  .hero-actions{
+    display:flex;
+    flex-wrap:wrap;
+    gap:12px;
+    margin-top:22px;
+  }
 
-        /* TRẠNG THÁI KHÓA */
-        .locked-content {
-            opacity: 0.4;
-            pointer-events: none; /* Ngăn không cho click */
-            filter: grayscale(100%);
-            transition: all 0.5s ease;
-        }
+  .btn{
+    appearance:none;
+    border:none;
+    cursor:pointer;
+    text-decoration:none;
+    color:#fff;
+    display:inline-flex;
+    align-items:center;
+    justify-content:center;
+    gap:10px;
+    font-weight:900;
+    letter-spacing:.2px;
+    padding:13px 18px;
+    border-radius:16px;
+    transition:transform .18s ease, box-shadow .18s ease, opacity .18s ease, background .18s ease;
+    box-shadow:0 12px 26px rgba(0,0,0,.18);
+    user-select:none;
+  }
 
-        .unlocked {
-            opacity: 1;
-            pointer-events: auto;
-            filter: grayscale(0%);
-        }
+  .btn:hover{transform:translateY(-2px)}
+  .btn:active{transform:translateY(0px) scale(.99)}
 
-        #verify-message {
-            text-align: center;
-            font-size: 0.95rem;
-            color: var(--text-muted);
-            margin-top: 10px;
-            font-style: italic;
-        }
+  .btn.primary{
+    background:linear-gradient(135deg, var(--accent), #5e7bff);
+    box-shadow:0 14px 30px rgba(124,92,255,.30), 0 0 22px rgba(124,92,255,.12);
+  }
 
-        .success-text {
-            color: var(--primary) !important;
-            font-weight: bold;
-        }
-    </style>
+  .btn.green{
+    background:linear-gradient(135deg, #1fbf60, var(--accent3));
+    box-shadow:0 14px 30px rgba(37,211,102,.22), 0 0 18px rgba(37,211,102,.10);
+  }
+
+  .btn.red{
+    background:linear-gradient(135deg, #ff4768, #ff7b8a);
+    box-shadow:0 14px 30px rgba(255,93,122,.18);
+  }
+
+  .btn.ghost{
+    background:rgba(255,255,255,.05);
+    border:1px solid rgba(255,255,255,.08);
+    box-shadow:none;
+  }
+
+  .stats{
+    display:grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap:12px;
+    margin-top:24px;
+  }
+
+  .stat{
+    padding:14px 16px;
+    border-radius:18px;
+    background:rgba(255,255,255,.03);
+    border:1px solid rgba(255,255,255,.07);
+  }
+
+  .stat b{
+    display:block;
+    margin-bottom:4px;
+    font-size:18px;
+  }
+
+  .stat span{
+    color:var(--muted);
+    font-size:12px;
+    line-height:1.5;
+  }
+
+  .side{
+    padding:18px;
+    display:flex;
+    flex-direction:column;
+    gap:14px;
+  }
+
+  .card{
+    position:relative;
+    padding:18px;
+    border-radius:22px;
+    background:linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,.03));
+    border:1px solid rgba(255,255,255,.08);
+    overflow:hidden;
+    transform-style:preserve-3d;
+    transition:transform .22s ease, border-color .22s ease, box-shadow .22s ease;
+  }
+
+  .card:hover{
+    transform:translateY(-4px) rotateX(2deg);
+    border-color:rgba(124,92,255,.22);
+    box-shadow:0 18px 45px rgba(0,0,0,.26);
+  }
+
+  .discord{
+    background:linear-gradient(135deg, rgba(88,101,242,.22), rgba(0,212,255,.08));
+    border:1px solid rgba(88,101,242,.26);
+  }
+
+  .discord .badge{
+    display:inline-flex;
+    align-items:center;
+    gap:8px;
+    padding:7px 10px;
+    border-radius:999px;
+    background:rgba(88,101,242,.16);
+    border:1px solid rgba(88,101,242,.20);
+    color:#eef1ff;
+    font-size:12px;
+    font-weight:900;
+  }
+
+  .verify{
+    background:linear-gradient(135deg, rgba(255,176,77,.20), rgba(255,93,122,.08));
+    border:1px solid rgba(255,176,77,.20);
+  }
+
+  .card h3{
+    margin:12px 0 8px;
+    font-size:19px;
+    line-height:1.2;
+  }
+
+  .card p{
+    margin:0;
+    color:var(--muted);
+    line-height:1.7;
+    font-size:14px;
+  }
+
+  .card .row{
+    display:flex;
+    align-items:flex-start;
+    gap:12px;
+  }
+
+  .icon{
+    width:46px;
+    height:46px;
+    flex:none;
+    border-radius:16px;
+    display:grid;
+    place-items:center;
+    font-weight:1000;
+    background:rgba(255,255,255,.07);
+    border:1px solid rgba(255,255,255,.08);
+  }
+
+  .discord .icon{
+    background:linear-gradient(135deg, #5865f2, #7b86ff);
+    box-shadow:0 0 20px rgba(88,101,242,.22);
+  }
+
+  .verify .icon{
+    background:linear-gradient(135deg, #ffb84d, #ff7b8a);
+    box-shadow:0 0 20px rgba(255,184,77,.18);
+  }
+
+  .unlock{
+    display:flex;
+    gap:10px;
+    flex-wrap:wrap;
+    margin-top:14px;
+  }
+
+  .status{
+    margin-top:12px;
+    padding:12px 14px;
+    border-radius:16px;
+    background:rgba(255,255,255,.04);
+    border:1px dashed rgba(255,255,255,.12);
+    color:var(--muted);
+    font-size:13px;
+    line-height:1.6;
+  }
+
+  .status strong{color:#fff}
+
+  .section{
+    margin-top:18px;
+    padding:22px;
+  }
+
+  .section-head{
+    display:flex;
+    align-items:end;
+    justify-content:space-between;
+    gap:16px;
+    margin-bottom:16px;
+  }
+
+  .section-head h2{
+    margin:0;
+    font-size:22px;
+    letter-spacing:-.02em;
+  }
+
+  .section-head span{
+    color:var(--muted);
+    font-size:13px;
+  }
+
+  .grid{
+    display:grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap:14px;
+  }
+
+  .file-card{
+    position:relative;
+    padding:20px;
+    border-radius:22px;
+    background:
+      linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,.03)),
+      radial-gradient(circle at top right, rgba(0,212,255,.12), transparent 28%);
+    border:1px solid rgba(255,255,255,.08);
+    overflow:hidden;
+    box-shadow:0 14px 34px rgba(0,0,0,.20);
+    transition:transform .22s ease, box-shadow .22s ease, border-color .22s ease;
+  }
+
+  .file-card:hover{
+    transform:translateY(-4px);
+    border-color:rgba(0,212,255,.18);
+    box-shadow:0 18px 40px rgba(0,0,0,.28), 0 0 26px rgba(0,212,255,.08);
+  }
+
+  .tag{
+    display:inline-flex;
+    align-items:center;
+    gap:8px;
+    padding:7px 10px;
+    border-radius:999px;
+    font-size:12px;
+    font-weight:900;
+    background:rgba(0,212,255,.09);
+    border:1px solid rgba(0,212,255,.18);
+    color:#dcfbff;
+  }
+
+  .file-card h3{
+    margin:12px 0 8px;
+    font-size:20px;
+  }
+
+  .file-card p{
+    margin:0;
+    color:var(--muted);
+    line-height:1.75;
+    font-size:14px;
+  }
+
+  .file-actions{
+    display:flex;
+    flex-wrap:wrap;
+    gap:10px;
+    margin-top:16px;
+  }
+
+  .btn.small{padding:11px 14px;border-radius:14px;font-size:13px}
+
+  .footer{
+    margin-top:18px;
+    padding:18px;
+    text-align:center;
+    color:var(--muted);
+    font-size:13px;
+    line-height:1.8;
+  }
+
+  .footer strong{color:#fff}
+
+  .locked-hint{
+    font-size:12px;
+    color:#ffe7b0;
+  }
+
+  .hide{display:none !important;}
+
+  @media (max-width: 920px){
+    .hero{grid-template-columns:1fr}
+    .grid{grid-template-columns:1fr}
+    .stats{grid-template-columns:1fr}
+    .topbar{flex-direction:column;align-items:flex-start}
+    .brand p{max-width:100%}
+    .section-head{flex-direction:column;align-items:flex-start}
+  }
+
+  @media (max-width: 520px){
+    .hero-main,.section{padding:18px}
+    .side{padding:14px}
+    .title{font-size:clamp(32px, 10vw, 50px)}
+    .card h3,.file-card h3{font-size:18px}
+  }
+</style>
 </head>
 <body>
+<canvas id="fx"></canvas>
+<div class="noise"></div>
 
-    <div class="container">
-        <div class="header">
-            <h1>ZENO <span>REGEDIT</span></h1>
-            <p>CHIA SẺ FILE TÀI NGUYÊN SIÊU VIP</p>
-        </div>
-
-        <a href="https://discord.gg/TamUEZXEpG" target="_blank" class="discord-banner">
-            <i class="fab fa-discord"></i>
-            👨‍🔧 THAM GIA DISCORD ĐỂ NHẬN HỖ TRỢ TRỰC TIẾP!
-        </a>
-
-        <div class="section-box">
-            <h2 class="section-title"><i class="fas fa-lock"></i> Bước 1: Mở Khóa Liên Kết</h2>
-            <p style="margin-bottom: 15px; color: var(--text-muted);">Bạn cần Like video mới nhất và Đăng ký kênh để mở khóa các file bên dưới.</p>
-            
-            <button class="btn btn-youtube" onclick="startVerification()">
-                <i class="fab fa-youtube"></i> XÁC MINH (LIKE & ĐĂNG KÝ)
-            </button>
-            <div id="verify-message">Chưa xác minh. Các liên kết đang bị khóa.</div>
-        </div>
-
-        <div class="section-box locked-content" id="download-section">
-            <h2 class="section-title"><i class="fas fa-folder-open"></i> Danh Mục Tải Về</h2>
-            
-            <a href="https://link4m.net/kvOiP" target="_blank" class="btn btn-download">
-                <span><i class="fas fa-file-archive"></i> DATA Nhẹ Tâm</span>
-                <i class="fas fa-download" style="color: var(--primary);"></i>
-            </a>
-
-            <a href="https://link4m.net/hOdYuTP" target="_blank" class="btn btn-download">
-                <span><i class="fas fa-map-marker-alt"></i> Định vị (Lưu ý: Tải Full Tài Nguyên)</span>
-                <i class="fas fa-download" style="color: var(--primary);"></i>
-            </a>
-
-            <a href="https://link4m.org/ikWNEz" target="_blank" class="btn btn-download">
-                <span><i class="fas fa-crosshairs"></i> AIMLOCK</span>
-                <i class="fas fa-download" style="color: var(--primary);"></i>
-            </a>
-
-            <a href="https://link4m.org/pZzEr" target="_blank" class="btn btn-download">
-                <span><i class="fas fa-bolt"></i> Nhẹ Tâm 200k</span>
-                <i class="fas fa-download" style="color: var(--primary);"></i>
-            </a>
-        </div>
-    </div>
-
-    <script>
-        function startVerification() {
-            // Mở link Youtube trong tab mới
-            window.open('https://youtube.com/@taine677?si=bfpznH3ppNZCCuLd', '_blank');
-            
-            let messageEl = document.getElementById('verify-message');
-            messageEl.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Đang kiểm tra hệ thống... Vui lòng đợi 10 giây.';
-            messageEl.style.color = '#fff';
-
-            // Giả lập thời gian chờ người dùng xem và đăng ký (10 giây)
-            setTimeout(function() {
-                // Mở khóa khu vực link
-                document.getElementById('download-section').classList.add('unlocked');
-                document.getElementById('download-section').classList.remove('locked-content');
-                
-                // Đổi thông báo thành công
-                messageEl.innerHTML = '<i class="fas fa-check-circle"></i> Xác minh thành công! Bạn có thể tải file bên dưới.';
-                messageEl.classList.add('success-text');
-            }, 10000); // 10000 milliseconds = 10 giây
-        }
-    </script>
-</body>
-</html>
-x 0 14px;
-    }
-    .card-price span {
-      color: #ff8c00;
-    }
-    .card-actions {
-      display: flex;
-      gap: 10px;
-      margin-top: auto;
-      flex-wrap: wrap;
-    }
-    .btn {
-      padding: 10px 0;
-      border: none;
-      border-radius: 40px;
-      font-weight: 600;
-      font-size: 0.8rem;
-      cursor: pointer;
-      transition: all 0.2s ease;
-      flex: 1;
-      text-align: center;
-      background: #252525;
-      color: #ddd;
-      border: 1px solid #333;
-      min-width: 120px;
-    }
-    .btn-primary {
-      background: linear-gradient(135deg, #ff4500, #e03e00);
-      color: #fff;
-      border: none;
-      box-shadow: 0 4px 12px rgba(255, 69, 0, 0.3);
-    }
-    .btn-primary:hover {
-      transform: scale(0.97);
-      box-shadow: 0 0 20px #ff4500;
-      background: #ff5500;
-    }
-    .btn-outline {
-      background: transparent;
-      border: 1px solid #444;
-    }
-    .btn-outline:hover {
-      background: #2a2a2a;
-      border-color: #ff8c00;
-      color: #ff8c00;
-    }
-    .btn-danger {
-      background: #2a1010;
-      border: 1px solid #5a1d1d;
-      color: #ffb3b3;
-    }
-    .btn-danger:hover {
-      border-color: #ff4500;
-      color: #fff;
-      background: #3a1212;
-    }
-
-    .sold-badge {
-      position: absolute;
-      top: 14px;
-      right: -52px;
-      transform: rotate(24deg);
-      background: rgba(255, 69, 0, 0.92);
-      padding: 8px 70px;
-      font-weight: 900;
-      font-size: 0.85rem;
-      color: #0f0f0f;
-      letter-spacing: 1px;
-      text-transform: uppercase;
-      border: 1px solid rgba(255, 140, 0, 0.6);
-      display: none;
-    }
-
-    /* ----- MODAL ----- */
-    .modal-overlay {
-      display: none;
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background: rgba(0, 0, 0, 0.82);
-      backdrop-filter: blur(4px);
-      align-items: center;
-      justify-content: center;
-      z-index: 999;
-      padding: 14px;
-    }
-    .modal-box {
-      background: #1a1a1a;
-      max-width: 520px;
-      width: 100%;
-      padding: 26px 22px;
-      border-radius: 40px;
-      border: 1px solid #333;
-      box-shadow: 0 30px 50px rgba(0, 0, 0, 0.8);
-      animation: fadeIn 0.25s ease;
-      max-height: 86vh;
-      overflow: auto;
-    }
-    @keyframes fadeIn {
-      from {
-        opacity: 0;
-        transform: scale(0.94);
-      }
-      to {
-        opacity: 1;
-        transform: scale(1);
-      }
-    }
-    .modal-box h3 {
-      font-size: 1.5rem;
-      margin-bottom: 6px;
-      color: #ff8c00;
-    }
-    .modal-box .sub {
-      color: #aaa;
-      margin-bottom: 16px;
-      font-size: 0.95rem;
-    }
-    .modal-actions {
-      display: flex;
-      gap: 12px;
-      margin-top: 12px;
-      flex-wrap: wrap;
-    }
-    .modal-actions .btn {
-      flex: 1;
-      padding: 12px 0;
-      min-width: 150px;
-    }
-    .btn-confirm {
-      background: #ff4500;
-      color: #fff;
-      border: none;
-    }
-    .btn-confirm:hover {
-      background: #ff5500;
-      box-shadow: 0 0 20px #ff4500;
-    }
-    .btn-cancel {
-      background: #2a2a2a;
-      border: 1px solid #444;
-      color: #ccc;
-    }
-    .btn-cancel:hover {
-      background: #3a3a3a;
-    }
-
-    .form-row {
-      display: grid;
-      grid-template-columns: 1fr;
-      gap: 10px;
-      margin: 12px 0;
-    }
-    .form-row label {
-      font-size: 0.9rem;
-      color: #cfcfcf;
-    }
-    .input,
-    select.input,
-    textarea.input {
-      width: 100%;
-      border-radius: 16px;
-      padding: 12px 14px;
-      border: 1px solid #333;
-      background: #111;
-      color: #eee;
-      outline: none;
-    }
-    .input:focus {
-      border-color: #ff4500;
-      box-shadow: 0 0 0 2px rgba(255, 69, 0, 0.22);
-    }
-    .hint {
-      font-size: 0.85rem;
-      color: #8e8e8e;
-      margin-top: 6px;
-    }
-    .pill {
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      padding: 6px 12px;
-      border-radius: 999px;
-      border: 1px solid #333;
-      background: #191919;
-      color: #ddd;
-      font-size: 0.85rem;
-    }
-    .pill strong {
-      color: #ff8c00;
-    }
-
-    .table {
-      width: 100%;
-      border-collapse: collapse;
-      border-radius: 16px;
-      overflow: hidden;
-      border: 1px solid #2c2c2c;
-      background: #121212;
-      margin-top: 10px;
-    }
-    .table th,
-    .table td {
-      padding: 10px 12px;
-      font-size: 0.88rem;
-      border-bottom: 1px solid #202020;
-      vertical-align: top;
-    }
-    .table th {
-      text-align: left;
-      color: #ff8c00;
-      background: #161616;
-    }
-    .table tr:last-child td {
-      border-bottom: none;
-    }
-    .mono {
-      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
-    }
-
-    /* ----- FOOTER ----- */
-    .footer {
-      margin-top: 50px;
-      padding: 28px 16px 16px;
-      border-top: 1px solid #282828;
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
-      gap: 24px;
-      color: #999;
-      font-size: 0.85rem;
-    }
-    .footer h4 {
-      color: #ddd;
-      font-size: 1rem;
-      margin-bottom: 8px;
-      font-weight: 600;
-    }
-    .footer i {
-      color: #ff4500;
-      margin-right: 8px;
-    }
-    .footer .contact i {
-      width: 20px;
-    }
-    .footer .copy {
-      grid-column: 1 / -1;
-      text-align: center;
-      color: #555;
-      margin-top: 12px;
-    }
-
-    @media (max-width: 700px) {
-      .header {
-        flex-direction: column;
-        align-items: stretch;
-      }
-      .search-bar {
-        margin: 6px 0;
-      }
-      .nav-menu {
-        justify-content: center;
-      }
-      .banner-stats {
-        grid-template-columns: 1fr;
-      }
-      .stats-grid {
-        grid-template-columns: repeat(3, 1fr);
-      }
-      .filter-section {
-        border-radius: 30px;
-        flex-direction: column;
-        align-items: stretch;
-      }
-      .filter-group {
-        justify-content: center;
-      }
-      .card-grid {
-        grid-template-columns: 1fr 1fr;
-      }
-      .user-badge .meta .email {
-        max-width: 120px;
-      }
-    }
-    @media (max-width: 480px) {
-      .card-grid {
-        grid-template-columns: 1fr;
-      }
-      .modal-box {
-        padding: 20px;
-      }
-      .banner-content h2 {
-        font-size: 1.2rem;
-      }
-      .user-badge {
-        width: 100%;
-        justify-content: space-between;
-      }
-    }
-  </style>
-</head>
-<body>
-  <div class="container">
-
-    <header class="header">
-      <div class="logo"><i class="fas fa-fire"></i> Shop Acc Clone Free Fire Minh Datz</div>
-
-      <div class="search-bar">
-        <i class="fas fa-search"></i>
-        <input id="searchInput" type="text" placeholder="Tìm acc theo MS, tên...">
-      </div>
-
-      <nav class="nav-menu">
-        <a href="#" data-nav="home"><i class="fas fa-home"></i> Trang chủ</a>
-        <button type="button" data-nav="topup"><i class="fas fa-coins"></i> Nạp tiền</button>
-        <button type="button" data-nav="history"><i class="fas fa-history"></i> Lịch sử</button>
-        <button type="button" data-nav="support"><i class="fas fa-headset"></i> Hỗ trợ</button>
-
-        <span class="user-badge" id="userBadge">
-          <span class="avatar" id="userAvatar">U</span>
-          <span class="meta">
-            <span class="email" id="userEmail">user@email</span>
-            <span class="balance" id="userBalance">0đ</span>
-          </span>
-        </span>
-
-        <button type="button" class="btn-pill" id="btnAdmin" style="display:none;"><i class="fas fa-user-shield"></i> Admin</button>
-        <button type="button" class="btn-pill" id="btnLogin"><i class="fas fa-user-circle"></i> Đăng nhập</button>
-        <button type="button" class="btn-pill" id="btnRegister"><i class="fas fa-user-plus"></i> Đăng ký</button>
-        <button type="button" class="btn-pill" id="btnLogout" style="display:none;background:linear-gradient(135deg,#333,#111);box-shadow:none;"><i class="fas fa-right-from-bracket"></i> Thoát</button>
-      </nav>
-    </header>
-
-    <section class="banner-stats">
-      <div class="banner-content">
-        <h2><i class="fas fa-bolt" style="color:#ff8c00;"></i> Shop Acc Clone Free Fire Minh Datz</h2>
-        <div class="slogan">🔥 Uy tín - Giá rẻ - Nhiều acc clone Lv5, Lv8, Lv15</div>
-        <div class="price-tags">
-          <span class="price-tag">💰 10.000đ</span>
-          <span class="price-tag">💰 20.000đ</span>
-          <span class="price-tag">💰 50.000đ</span>
-        </div>
-        <p style="margin-top:8px;">Mua bán acc Free Fire — tài khoản, đăng nhập, thanh toán là dữ liệu <span class="highlight">thật</span> lưu trong database.</p>
-        <p style="margin-top:6px;">
-          <span class="pill"><i class="fas fa-circle-info"></i> Nạp tiền qua chuyển khoản, <strong>admin duyệt thủ công</strong> — không thu mã thẻ cào.</span>
-        </p>
-      </div>
-      <div class="stats-grid">
-        <div class="stat-item"><span class="number" id="statSold">0</span><span class="label">Đã bán</span></div>
-        <div class="stat-item"><span class="number" id="statStock">0</span><span class="label">Acc sẵn</span></div>
-        <div class="stat-item"><span class="number" id="statUsers">0</span><span class="label">Thành viên</span></div>
-      </div>
-    </section>
-
-    <div class="filter-section">
-      <div class="filter-group">
-        <span><i class="fas fa-tag"></i> Giá:</span>
-        <button class="filter-btn active" data-filter="all">Tất cả</button>
-        <button class="filter-btn" data-filter="10k">10.000đ</button>
-        <button class="filter-btn" data-filter="20k">20.000đ</button>
-        <button class="filter-btn" data-filter="50k">50.000đ</button>
-      </div>
-      <div class="filter-group">
-        <span><i class="fas fa-layer-group"></i> Loại:</span>
-        <button class="filter-btn active" data-type="all">Tất cả</button>
-        <button class="filter-btn" data-type="lv5">Lv5</button>
-        <button class="filter-btn" data-type="lv8">Lv8</button>
-        <button class="filter-btn" data-type="lv15">Lv15</button>
-      </div>
-    </div>
-
-    <div class="card-grid" id="cardGrid">
-      <!-- Acc mẫu sẽ được render bằng JavaScript -->
-    </div>
-
-    <footer class="footer">
-      <div class="contact">
-        <h4><i class="fas fa-phone-alt"></i> Liên hệ</h4>
-        <p><i class="fab fa-facebook"></i> FB: Minh Datz</p>
-        <p><i class="fas fa-comment-dots"></i> Zalo: 0357439435</p>
-        <p><i class="fas fa-envelope"></i> minhdatdeptrai009@gmail.com</p>
-        <p><i class="fas fa-shield-alt"></i> Uy tín hàng đầu</p>
-      </div>
+<div class="wrap">
+  <header class="topbar">
+    <div class="brand">
+      <div class="logo">Z</div>
       <div>
-        <h4><i class="fas fa-file-contract"></i> Điều khoản</h4>
-        <p>Bảo hành 24h <br> Đổi trả nếu sai mô tả</p>
+        <h1>ZENO REGEDIT</h1>
+        <p>Shop-style landing page cho chia sแบป file, tแป‘i ฦฐu cho GitHub Pages</p>
       </div>
+    </div>
+    <div class="pill">โก CHIA Sแบบ FILE โ€ข Hแป– TRแปข NHANH โ€ข GIAO DIแปN XแปN</div>
+  </header>
+
+  <section class="hero">
+    <div class="panel hero-main">
+      <span class="eyebrow">CHIA Sแบบ FILE</span>
+      <h2 class="title"><span class="grad">ZENO REGEDIT</span></h2>
+      <p class="desc">
+        Mแปt trang giแปi thiแปu file theo phong cรกch shop Free Fire: nแปn ฤ‘แปng, รกnh sรกng neon, card nแป•i khแป‘i,
+        nรบt tแบฃi แบฉn vร  mแป khรณa sau khi xรกc minh 10 giรขy. Phรน hแปฃp ฤ‘แป ฤ‘ฤng lรชn GitHub Pages vร  dรนng nhฦฐ landing page chรญnh.
+      </p>
+
+      <div class="hero-actions">
+        <a class="btn green" href="https://youtube.com/@taine677?si=bfpznH3ppNZCCuLd" target="_blank" rel="noopener noreferrer">๐‘ Like &amp; ฤฤng kรฝ</a>
+        <button class="btn primary" id="verifyBtn" type="button">๐”“ XรC MINH 10 GIรY</button>
+      </div>
+
+      <div class="stats">
+        <div class="stat">
+          <b>Hiแปu แปฉng sรกng</b>
+          <span>Logo vร  nรบt cรณ glow, chuyแปn ฤ‘แปng mฦฐแปฃt</span>
+        </div>
+        <div class="stat">
+          <b>แบจn link tแบฃi</b>
+          <span>Chแป hiแปn sau khi hoร n tแบฅt ฤ‘แบฟm ngฦฐแปฃc</span>
+        </div>
+        <div class="stat">
+          <b>Responsive</b>
+          <span>Hiแปn thแป ฤ‘แบนp trรชn ฤ‘iแปn thoแบกi lแบซn mรกy tรญnh</span>
+        </div>
+      </div>
+    </div>
+
+    <aside class="panel side">
+      <div class="card discord">
+        <div class="row">
+          <div class="icon">D</div>
+          <div>
+            <span class="badge">๐‘จโ€๐”ง DISCORD Hแป– TRแปข</span>
+            <h3>Vร o Discord ฤ‘แป nhแบญn hแป— trแปฃ</h3>
+            <p>Tham gia Discord ฤ‘แป cแบญp nhแบญt file mแปi, nhแบญn hแป— trแปฃ nhanh vร  bรกo lแป—i tiแปn hฦกn.</p>
+          </div>
+        </div>
+        <div class="unlock">
+          <a class="btn primary" href="https://discord.gg/TamUEZXEpG" target="_blank" rel="noopener noreferrer">THAM GIA DISCORD</a>
+        </div>
+      </div>
+
+      <div class="card verify">
+        <div class="row">
+          <div class="icon">โณ</div>
+          <div>
+            <span class="badge" style="display:inline-flex;align-items:center;gap:8px;padding:7px 10px;border-radius:999px;background:rgba(255,184,77,.16);border:1px solid rgba(255,184,77,.22);color:#fff;font-size:12px;font-weight:900;">XรC MINH</span>
+            <h3>Khรณa mแป tแบฃi file bแบฑng ฤ‘แบฟm ngฦฐแปฃc</h3>
+            <p>Bแบฅm xรกc minh ฤ‘แป mแป khรณa nรบt tแบฃi sau 10 giรขy.</p>
+          </div>
+        </div>
+        <div class="status" id="statusBox">
+          Trแบกng thรกi: <strong>chฦฐa xรกc minh</strong> โ€” bแบฅm nรบt bรชn trรชn ฤ‘แป mแป khรณa.
+        </div>
+        <div class="locked-hint" id="countdownText">Nรบt tแบฃi hiแปn ฤ‘ang bแป แบฉn.</div>
+      </div>
+    </aside>
+  </section>
+
+  <section class="panel section">
+    <div class="section-head">
       <div>
-        <h4><i class="fas fa-info-circle"></i> Lưu ý</h4>
-        <p>Acc chỉ bán 1 lần. <br>Không hỗ trợ lấy lại sau khi giao.</p>
+        <h2>Danh Mแปฅc File</h2>
+        <span>Bแบฅm tแบฃi sau khi xรกc minh xong.</span>
       </div>
-      <div class="copy">© 2026 Shop Acc Clone Free Fire Minh Datz</div>
-    </footer>
-  </div>
-
-  <!-- MODAL: ĐĂNG KÝ -->
-  <div class="modal-overlay" id="modalRegister">
-    <div class="modal-box">
-      <h3><i class="fas fa-user-plus" style="color:#ff4500;"></i> Đăng ký</h3>
-      <div class="sub">Tạo tài khoản thật, lưu trong database.</div>
-      <div class="form-row">
-        <label>Email</label>
-        <input class="input" id="regEmail" placeholder="vd: tenban@gmail.com" autocomplete="email">
-      </div>
-      <div class="form-row">
-        <label>Mật khẩu (tối thiểu 6 ký tự)</label>
-        <input class="input" id="regPassword" type="password" autocomplete="new-password">
-      </div>
-      <div class="modal-actions">
-        <button class="btn btn-confirm" id="btnDoRegister"><i class="fas fa-check"></i> Đăng ký</button>
-        <button class="btn btn-cancel" data-close="modalRegister">Đóng</button>
-      </div>
-      <div class="hint" id="regHint"></div>
+      <span>โฌ Tแบฃi theo danh mแปฅc</span>
     </div>
-  </div>
 
-  <!-- MODAL: ĐĂNG NHẬP -->
-  <div class="modal-overlay" id="modalLogin">
-    <div class="modal-box">
-      <h3><i class="fas fa-user-circle" style="color:#ff4500;"></i> Đăng nhập</h3>
-      <div class="form-row">
-        <label>Email</label>
-        <input class="input" id="loginEmail" placeholder="vd: tenban@gmail.com" autocomplete="email">
-      </div>
-      <div class="form-row">
-        <label>Mật khẩu</label>
-        <input class="input" id="loginPassword" type="password" autocomplete="current-password">
-      </div>
-      <div class="modal-actions">
-        <button class="btn btn-confirm" id="btnDoLogin"><i class="fas fa-right-to-bracket"></i> Đăng nhập</button>
-        <button class="btn btn-cancel" data-close="modalLogin">Đóng</button>
-      </div>
-      <div class="hint" id="loginHint"></div>
+    <div class="grid">
+      <article class="file-card">
+        <span class="tag">DATA NHแบธ TรM</span>
+        <h3>File tแป‘i ฦฐu, gแปn nhแบน</h3>
+        <p>Phรน hแปฃp cho ngฦฐแปi cแบงn tแบฃi nhanh vร  dรนng ngay. Nรบt tแบฃi sแบฝ hiแปn sau khi mแป khรณa.</p>
+        <div class="file-actions">
+          <a class="btn primary small tai" href="https://link4m.net/kvOiP" target="_blank" rel="noopener noreferrer">TแบขI FILE</a>
+        </div>
+      </article>
+
+      <article class="file-card">
+        <span class="tag">ฤแปNH Vแป</span>
+        <h3>Lฦฐu รฝ: tแบฃi full tร i nguyรชn</h3>
+        <p>Nรบt tแบฃi chแป xuแบฅt hiแปn sau khi hoร n tแบฅt xรกc minh 10 giรขy trรชn giao diแปn.</p>
+        <div class="file-actions">
+          <a class="btn primary small tai" href="https://link4m.net/hOdYuTP" target="_blank" rel="noopener noreferrer">TแบขI FILE</a>
+        </div>
+      </article>
+
+      <article class="file-card">
+        <span class="tag">AIMLOCK</span>
+        <h3>Danh mแปฅc chuyรชn biแปt</h3>
+        <p>Thiแบฟt kแบฟ kiแปu card shop ฤ‘แป nhรฌn chuyรชn nghiแปp hฦกn trรชn GitHub Pages.</p>
+        <div class="file-actions">
+          <a class="btn primary small tai" href="https://link4m.org/ikWNEz" target="_blank" rel="noopener noreferrer">TแบขI FILE</a>
+        </div>
+      </article>
+
+      <article class="file-card">
+        <span class="tag">NHแบธ TรM 200K</span>
+        <h3>Thแบป nแป•i bแบญt</h3>
+        <p>Hiแปu แปฉng sรกng, viแปn glow vร  ฤ‘แป• bรณng giรบp phแบงn nแปi dung nhรฌn cao cแบฅp hฦกn.</p>
+        <div class="file-actions">
+          <a class="btn primary small tai" href="https://link4m.org/pZzEr" target="_blank" rel="noopener noreferrer">TแบขI FILE</a>
+        </div>
+      </article>
     </div>
-  </div>
+  </section>
 
-  <!-- MODAL: MUA ACC -->
-  <div class="modal-overlay" id="modalBuy">
-    <div class="modal-box">
-      <h3><i class="fas fa-cart-plus" style="color:#ff4500;"></i> Xác nhận mua</h3>
-      <div class="sub">Bạn đang mua acc: <strong id="buyAccId">MS-1234</strong></div>
-      <div class="pill" style="margin-bottom:10px;"><i class="fas fa-wallet"></i> Số dư: <strong id="buyBalance">0đ</strong></div>
-      <div class="pill" style="margin-bottom:12px;"><i class="fas fa-tag"></i> Giá: <strong id="buyPrice">0đ</strong></div>
-      <div class="modal-actions">
-        <button class="btn btn-confirm" id="btnConfirmBuy"><i class="fas fa-check"></i> Xác nhận mua bằng số dư</button>
-        <button class="btn btn-cancel" data-close="modalBuy">Hủy</button>
-      </div>
-      <div class="hint">Số dư không đủ? Vào mục "Nạp tiền" để gửi yêu cầu.</div>
-      <div id="buyResult"></div>
-    </div>
-  </div>
+  <section class="panel footer">
+    <strong>ZENO REGEDIT</strong> โ€” Hรฃy vร o Discord ฤ‘แป nhแบญn hแป— trแปฃ nhanh, cแบญp nhแบญt file mแปi vร  hฦฐแปng dแบซn chi tiแบฟt.<br>
+    Mแบนo: ฤ‘แป•i file nร y thร nh <strong>index.html</strong> rแป“i up thแบณng lรชn GitHub Pages lร  chแบกy.
+  </section>
+</div>
 
-  <!-- MODAL: NẠP TIỀN -->
-  <div class="modal-overlay" id="modalTopup">
-    <div class="modal-box">
-      <h3><i class="fas fa-coins" style="color:#ff4500;"></i> Nạp tiền</h3>
-      <div class="sub">Gửi yêu cầu nạp tiền qua chuyển khoản ngân hàng. Admin xác nhận đã nhận tiền rồi mới cộng số dư.</div>
-      <div class="pill"><i class="fas fa-user"></i> Tài khoản: <strong id="topupUser">Chưa đăng nhập</strong></div>
-      <div class="pill" style="margin-top:10px;"><i class="fas fa-wallet"></i> Số dư hiện tại: <strong id="topupBalance">0đ</strong></div>
-      <div class="form-row">
-        <label>Số tiền muốn nạp (đ)</label>
-        <input class="input" id="topupAmount" type="number" min="10000" step="10000" placeholder="vd: 50000">
-      </div>
-      <div class="form-row">
-        <label>Ghi chú (tuỳ chọn)</label>
-        <input class="input" id="topupNote" placeholder="vd: đã chuyển khoản lúc 20h">
-      </div>
-      <div class="modal-actions">
-        <button class="btn btn-confirm" id="btnDoTopup"><i class="fas fa-paper-plane"></i> Gửi yêu cầu</button>
-        <button class="btn btn-cancel" data-close="modalTopup">Đóng</button>
-      </div>
-      <div class="hint" id="topupHint"></div>
-    </div>
-  </div>
+<script>
+  // Hide all download buttons until verified
+  const downloadButtons = document.querySelectorAll(".tai");
+  const verifyBtn = document.getElementById("verifyBtn");
+  const statusBox = document.getElementById("statusBox");
+  const countdownText = document.getElementById("countdownText");
 
-  <!-- MODAL: LỊCH SỬ -->
-  <div class="modal-overlay" id="modalHistory">
-    <div class="modal-box">
-      <h3><i class="fas fa-history" style="color:#ff4500;"></i> Lịch sử</h3>
-      <div id="historyWrap"></div>
-      <div class="modal-actions"><button class="btn btn-cancel" data-close="modalHistory">Đóng</button></div>
-    </div>
-  </div>
+  downloadButtons.forEach(btn => btn.classList.add("hide"));
 
-  <!-- MODAL: HỖ TRỢ -->
-  <div class="modal-overlay" id="modalSupport">
-    <div class="modal-box">
-      <h3><i class="fas fa-headset" style="color:#ff4500;"></i> Hỗ trợ</h3>
-      <div class="form-row"><label>Nội dung</label><textarea class="input" id="supportMsg" rows="4"></textarea></div>
-      <div class="modal-actions">
-        <button class="btn btn-confirm" id="btnSendSupport"><i class="fas fa-paper-plane"></i> Gửi</button>
-        <button class="btn btn-cancel" data-close="modalSupport">Đóng</button>
-      </div>
-    </div>
-  </div>
+  let verified = false;
+  let timer = null;
 
-  <!-- MODAL: ADMIN -->
-  <div class="modal-overlay" id="modalAdmin">
-    <div class="modal-box" style="max-width: 900px;">
-      <h3><i class="fas fa-user-shield" style="color:#ff4500;"></i> Bảng điều khiển Admin</h3>
+  function unlockDownloads(){
+    downloadButtons.forEach(btn => btn.classList.remove("hide"));
+    statusBox.innerHTML = 'Trแบกng thรกi: <strong>ฤ‘รฃ xรกc minh</strong> โ€” cรกc nรบt tแบฃi ฤ‘รฃ ฤ‘ฦฐแปฃc mแป.';
+    countdownText.textContent = 'ฤรฃ mแป khรณa tแบฅt cแบฃ nรบt tแบฃi.';
+    verifyBtn.textContent = 'โ… ฤร XรC MINH';
+    verifyBtn.disabled = true;
+    verifyBtn.style.opacity = "0.75";
+    verifyBtn.style.cursor = "not-allowed";
+    verified = true;
+  }
 
-      <div class="pill"><i class="fas fa-circle-info"></i> Format TXT: <span class="mono">id|price|type|desc|username|password</span></div>
-      <div class="form-row" style="grid-template-columns: 1fr;">
-        <label>Upload TXT kho acc</label>
-        <input class="input" id="adminTxt" type="file" accept=".txt,text/plain">
-      </div>
-      <div class="modal-actions" style="margin-top: 6px;">
-        <button class="btn btn-confirm" id="btnImportTxt"><i class="fas fa-file-import"></i> Import vào kho</button>
-        <a class="btn btn-outline" id="btnExportTxt" href="/api/admin/export"><i class="fas fa-file-export"></i> Xuất kho (TXT)</a>
-      </div>
+  verifyBtn.addEventListener("click", () => {
+    if (verified) return;
 
-      <div style="margin-top: 16px;">
-        <div class="pill"><i class="fas fa-boxes-stacked"></i> Tồn kho: <strong id="adminStockCount">0</strong></div>
-        <div class="pill" style="margin-left: 8px;"><i class="fas fa-receipt"></i> Đã bán: <strong id="adminSoldCount">0</strong></div>
-        <div id="adminTableWrap"></div>
-      </div>
+    window.open("https://youtube.com/@taine677?si=bfpznH3ppNZCCuLd", "_blank", "noopener,noreferrer");
 
-      <div style="margin-top: 22px;">
-        <h3 style="font-size:1.1rem;"><i class="fas fa-money-check-dollar"></i> Yêu cầu nạp tiền chờ duyệt</h3>
-        <div id="adminTopupsWrap"></div>
-      </div>
+    let t = 10;
+    countdownText.textContent = `โณ Vui lรฒng chแป ${t} giรขy...`;
+    statusBox.innerHTML = 'Trแบกng thรกi: <strong>ฤ‘ang xรกc minh</strong> โ€” chแป ฤ‘แบฟm ngฦฐแปฃc hoร n tแบฅt.';
 
-      <div class="modal-actions" style="margin-top:16px;">
-        <button class="btn btn-cancel" data-close="modalAdmin">Đóng</button>
-      </div>
-    </div>
-  </div>
-
-  <script>
-    (function() {
-      const fmtMoney = (v) => (Number(v || 0)).toLocaleString('vi-VN') + 'đ';
-      const $ = (id) => document.getElementById(id);
-      let currentUser = null;
-      let inventory = [];
-      let activeFilter = 'all';
-      let activeType = 'all';
-      let pendingBuyId = null;
-
-      // Mock data cho acc clone
-      const mockAccounts = [
-        { id: 'FF-001', price: 10000, type: 'lv5', desc: 'Acc clone Lv5, có skin cơ bản', username: 'clone_lv5_01', password: '123456' },
-        { id: 'FF-002', price: 20000, type: 'lv8', desc: 'Acc clone Lv8, có skin và súng', username: 'clone_lv8_01', password: '123456' },
-        { id: 'FF-003', price: 50000, type: 'lv15', desc: 'Acc clone Lv15, nhiều skin đẹp', username: 'clone_lv15_01', password: '123456' },
-        { id: 'FF-004', price: 10000, type: 'lv5', desc: 'Acc clone Lv5, có skin cơ bản', username: 'clone_lv5_02', password: '123456' },
-        { id: 'FF-005', price: 20000, type: 'lv8', desc: 'Acc clone Lv8, có skin và súng', username: 'clone_lv8_02', password: '123456' },
-        { id: 'FF-006', price: 50000, type: 'lv15', desc: 'Acc clone Lv15, nhiều skin đẹp', username: 'clone_lv15_02', password: '123456' },
-        { id: 'FF-007', price: 10000, type: 'lv5', desc: 'Acc clone Lv5, có skin cơ bản', username: 'clone_lv5_03', password: '123456' },
-        { id: 'FF-008', price: 20000, type: 'lv8', desc: 'Acc clone Lv8, có skin và súng', username: 'clone_lv8_03', password: '123456' },
-        { id: 'FF-009', price: 50000, type: 'lv15', desc: 'Acc clone Lv15, nhiều skin đẹp', username: 'clone_lv15_03', password: '123456' },
-        { id: 'FF-010', price: 20000, type: 'lv8', desc: 'Acc clone Lv8, có skin và súng', username: 'clone_lv8_04', password: '123456' },
-        { id: 'FF-011', price: 10000, type: 'lv5', desc: 'Acc clone Lv5, có skin cơ bản', username: 'clone_lv5_04', password: '123456' },
-        { id: 'FF-012', price: 50000, type: 'lv15', desc: 'Acc clone Lv15, nhiều skin đẹp', username: 'clone_lv15_04', password: '123456' },
-      ];
-
-      async function api(path, opts = {}) {
-        // Mock API cho demo
-        if (path === '/api/me') {
-          return { user: currentUser };
-        }
-        if (path === '/api/stats') {
-          return { sold: 0, stock: inventory.length, users: 0 };
-        }
-        if (path === '/api/inventory') {
-          return { items: inventory };
-        }
-        if (path === '/api/buy' && opts.method === 'POST') {
-          const id = opts.body.id;
-          const item = inventory.find(x => x.id === id);
-          if (!item) throw new Error('Acc không tồn tại');
-          if (item.sold) throw new Error('Acc đã được bán');
-          if ((currentUser?.balance || 0) < item.price) throw new Error('Số dư không đủ');
-          currentUser.balance -= item.price;
-          item.sold = true;
-          return { balance: currentUser.balance, account: { username: item.username, password: item.password } };
-        }
-        if (path === '/api/login' && opts.method === 'POST') {
-          currentUser = { email: opts.body.email, balance: 50000, is_admin: false };
-          return { user: currentUser };
-        }
-        if (path === '/api/register' && opts.method === 'POST') {
-          currentUser = { email: opts.body.email, balance: 0, is_admin: false };
-          return { user: currentUser };
-        }
-        if (path === '/api/logout') {
-          currentUser = null;
-          return {};
-        }
-        if (path === '/api/topup/request' && opts.method === 'POST') {
-          return { ref_code: 'TOP' + Date.now() };
-        }
-        if (path === '/api/history') {
-          return { items: [] };
-        }
-        if (path === '/api/support' && opts.method === 'POST') {
-          return {};
-        }
-        if (path === '/api/admin/accounts') {
-          return { items: inventory };
-        }
-        if (path === '/api/admin/topups') {
-          return { items: [] };
-        }
-        if (path === '/api/admin/import' && opts.method === 'POST') {
-          const lines = opts.body.text.split('\n').filter(l => l.trim());
-          let count = 0;
-          for (const line of lines) {
-            const parts = line.split('|');
-            if (parts.length >= 3) {
-              inventory.push({
-                id: parts[0].trim(),
-                price: parseInt(parts[1].trim()) || 0,
-                type: parts[2].trim() || 'lv5',
-                desc: parts[3]?.trim() || 'Acc clone',
-                username: parts[4]?.trim() || 'user' + Date.now(),
-                password: parts[5]?.trim() || '123456',
-                sold: false
-              });
-              count++;
-            }
-          }
-          return { count };
-        }
-        return {};
+    if (timer) clearInterval(timer);
+    timer = setInterval(() => {
+      t--;
+      if (t > 0){
+        countdownText.textContent = `โณ Vui lรฒng chแป ${t} giรขy...`;
+        return;
       }
+      clearInterval(timer);
+      unlockDownloads();
+    }, 1000);
+  });
 
-      function openModal(id) { $(id).style.display = 'flex'; }
+  // Animated particles background
+  const canvas = document.getElementById("fx");
+  const ctx = canvas.getContext("2d");
+  let w, h, dpr;
 
-      function closeModal(id) { $(id).style.display = 'none'; }
-      document.querySelectorAll('[data-close]').forEach(btn => {
-        btn.addEventListener('click', () => closeModal(btn.getAttribute('data-close')));
+  const dots = [];
+  const DOT_COUNT = 86;
+
+  function resize(){
+    dpr = Math.min(window.devicePixelRatio || 1, 2);
+    w = canvas.width = Math.floor(innerWidth * dpr);
+    h = canvas.height = Math.floor(innerHeight * dpr);
+    canvas.style.width = innerWidth + "px";
+    canvas.style.height = innerHeight + "px";
+  }
+
+  function rand(min, max){ return Math.random() * (max - min) + min; }
+
+  function init(){
+    dots.length = 0;
+    for(let i = 0; i < DOT_COUNT; i++){
+      dots.push({
+        x: rand(0, w),
+        y: rand(0, h),
+        r: rand(0.8, 2.2) * dpr,
+        vx: rand(-0.18, 0.18) * dpr,
+        vy: rand(-0.10, 0.14) * dpr,
+        a: rand(0.35, 0.9)
       });
-      document.querySelectorAll('.modal-overlay').forEach(ov => {
-        ov.addEventListener('click', (e) => { if (e.target === ov) ov.style.display = 'none'; });
-      });
+    }
+  }
 
-      function renderUserBadge() {
-        const badge = $('userBadge');
-        if (currentUser) {
-          badge.style.display = 'inline-flex';
-          $('userAvatar').textContent = currentUser.email[0].toUpperCase();
-          $('userEmail').textContent = currentUser.email;
-          $('userBalance').textContent = fmtMoney(currentUser.balance);
-          $('btnLogin').style.display = 'none';
-          $('btnRegister').style.display = 'none';
-          $('btnLogout').style.display = 'inline-flex';
-          $('btnAdmin').style.display = currentUser.is_admin ? 'inline-flex' : 'none';
-        } else {
-          badge.style.display = 'none';
-          $('btnLogin').style.display = 'inline-flex';
-          $('btnRegister').style.display = 'inline-flex';
-          $('btnLogout').style.display = 'none';
-          $('btnAdmin').style.display = 'none';
+  function draw(){
+    ctx.clearRect(0, 0, w, h);
+
+    // soft gradient glow
+    const g1 = ctx.createRadialGradient(w * 0.18, h * 0.12, 0, w * 0.18, h * 0.12, Math.min(w, h) * 0.35);
+    g1.addColorStop(0, "rgba(124,92,255,.16)");
+    g1.addColorStop(1, "rgba(124,92,255,0)");
+    ctx.fillStyle = g1;
+    ctx.fillRect(0, 0, w, h);
+
+    const g2 = ctx.createRadialGradient(w * 0.82, h * 0.16, 0, w * 0.82, h * 0.16, Math.min(w, h) * 0.28);
+    g2.addColorStop(0, "rgba(0,212,255,.13)");
+    g2.addColorStop(1, "rgba(0,212,255,0)");
+    ctx.fillStyle = g2;
+    ctx.fillRect(0, 0, w, h);
+
+    for (const p of dots){
+      p.x += p.vx;
+      p.y += p.vy;
+
+      if (p.x < -20) p.x = w + 20;
+      if (p.x > w + 20) p.x = -20;
+      if (p.y < -20) p.y = h + 20;
+      if (p.y > h + 20) p.y = -20;
+
+      ctx.beginPath();
+      ctx.fillStyle = `rgba(255,255,255,${p.a})`;
+      ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+      ctx.fill();
+    }
+
+    // Connect nearby points
+    for(let i = 0; i < dots.length; i++){
+      for(let j = i + 1; j < dots.length; j++){
+        const a = dots[i], b = dots[j];
+        const dx = a.x - b.x;
+        const dy = a.y - b.y;
+        const dist = Math.hypot(dx, dy);
+        if (dist < 150 * dpr){
+          const alpha = 1 - dist / (150 * dpr);
+          ctx.strokeStyle = `rgba(124,92,255,${alpha * 0.08})`;
+          ctx.lineWidth = 1 * dpr;
+          ctx.beginPath();
+          ctx.moveTo(a.x, a.y);
+          ctx.lineTo(b.x, b.y);
+          ctx.stroke();
         }
       }
+    }
 
-      async function refreshMe() {
-        const data = await api('/api/me');
-        currentUser = data.user;
-        renderUserBadge();
-      }
+    requestAnimationFrame(draw);
+  }
 
-      async function refreshStats() {
-        const s = await api('/api/stats');
-        $('statSold').textContent = s.sold;
-        $('statStock').textContent = s.stock;
-        $('statUsers').textContent = s.users;
-      }
+  window.addEventListener("resize", () => {
+    resize();
+    init();
+  });
 
-      function typeLabel(t) {
-        const map = { lv5: '🔥 Lv5', lv8: '⚡ Lv8', lv15: '👑 Lv15' };
-        return map[t] || t;
-      }
-
-      function typeIcon(t) {
-        const map = { lv5: '🔥', lv8: '⚡', lv15: '👑' };
-        return map[t] || '🎮';
-      }
-
-      function passFilter(item) {
-        if (activeType !== 'all' && item.type !== activeType) return false;
-        if (activeFilter === '10k' && item.price !== 10000) return false;
-        if (activeFilter === '20k' && item.price !== 20000) return false;
-        if (activeFilter === '50k' && item.price !== 50000) return false;
-        const q = $('searchInput').value.trim().toLowerCase();
-        if (q && !(item.id.toLowerCase().includes(q) || item.desc.toLowerCase().includes(q))) return false;
-        return true;
-      }
-
-      function renderCards() {
-        const list = inventory.filter(passFilter);
-        if (!list.length) {
-          $('cardGrid').innerHTML = '<div class="hint" style="text-align:center;padding:40px 0;">Không có acc phù hợp.</div>';
-          return;
-        }
-        $('cardGrid').innerHTML = list.map(item => `
-            <div class="acc-card">
-              <div class="card-img">${typeIcon(item.type)}</div>
-              <span class="card-id">${item.id}</span>
-              <div class="card-desc"><i class="fas fa-layer-group"></i> ${typeLabel(item.type)}</div>
-              <div class="card-desc"><i class="fas fa-info-circle"></i> ${escapeHtml(item.desc)}</div>
-              <div class="card-price">${fmtMoney(item.price)}</div>
-              <div class="card-actions">
-                <button class="btn btn-primary" data-buy="${item.id}" data-price="${item.price}"><i class="fas fa-cart-plus"></i> Mua ngay</button>
-              </div>
-            </div>
-          `).join('');
-        document.querySelectorAll('[data-buy]').forEach(btn => {
-          btn.addEventListener('click', () => openBuy(btn.getAttribute('data-buy'), Number(btn.getAttribute('data-price'))));
-        });
-      }
-
-      function escapeHtml(s) { return String(s || '').replace(/</g, '&lt;').replace(/>/g, '&gt;'); }
-
-      async function loadInventory() {
-        const data = await api('/api/inventory');
-        inventory = data.items;
-        renderCards();
-      }
-
-      function openBuy(id, price) {
-        if (!currentUser) { openModal('modalLogin'); return; }
-        pendingBuyId = id;
-        $('buyAccId').textContent = id;
-        $('buyBalance').textContent = fmtMoney(currentUser.balance);
-        $('buyPrice').textContent = fmtMoney(price);
-        $('buyResult').innerHTML = '';
-        openModal('modalBuy');
-      }
-
-      $('btnConfirmBuy').addEventListener('click', async () => {
-        if (!pendingBuyId) return;
-        try {
-          const data = await api('/api/buy', { method: 'POST', body: { id: pendingBuyId } });
-          currentUser.balance = data.balance;
-          renderUserBadge();
-          $('buyResult').innerHTML =
-            `<div class="hint" style="color:#68ff9b;">✅ Mua thành công! Tài khoản: <span class="mono">${escapeHtml(data.account.username)} / ${escapeHtml(data.account.password)}</span></div>`;
-          await loadInventory();
-          await refreshStats();
-        } catch (e) {
-          $('buyResult').innerHTML = `<div class="hint" style="color:#ff8c8c;">${escapeHtml(e.message)}</div>`;
-        }
-      });
-
-      $('btnRegister').addEventListener('click', () => openModal('modalRegister'));
-      $('btnLogin').addEventListener('click', () => openModal('modalLogin'));
-
-      $('btnDoRegister').addEventListener('click', async () => {
-        try {
-          await api('/api/register', { method: 'POST', body: { email: $('regEmail').value, password: $('regPassword')
-                .value } });
-          closeModal('modalRegister');
-          await refreshMe();
-          await refreshStats();
-        } catch (e) { $('regHint').innerHTML = `<span style="color:#ff8c8c;">${escapeHtml(e.message)}</span>`; }
-      });
-
-      $('btnDoLogin').addEventListener('click', async () => {
-        try {
-          await api('/api/login', { method: 'POST', body: { email: $('loginEmail').value, password: $('loginPassword')
-                .value } });
-          closeModal('modalLogin');
-          await refreshMe();
-          await loadInventory();
-        } catch (e) { $('loginHint').innerHTML = `<span style="color:#ff8c8c;">${escapeHtml(e.message)}</span>`; }
-      });
-
-      $('btnLogout').addEventListener('click', async () => {
-        await api('/api/logout', { method: 'POST' });
-        currentUser = null;
-        renderUserBadge();
-      });
-
-      document.querySelectorAll('[data-nav]').forEach(el => {
-        el.addEventListener('click', async (e) => {
-          e.preventDefault();
-          const nav = el.getAttribute('data-nav');
-          if (nav === 'home') return;
-          if (!currentUser) { openModal('modalLogin'); return; }
-          if (nav === 'topup') {
-            $('topupUser').textContent = currentUser.email;
-            $('topupBalance').textContent = fmtMoney(currentUser.balance);
-            $('topupHint').textContent = '';
-            openModal('modalTopup');
-          } else if (nav === 'history') {
-            await renderHistory();
-            openModal('modalHistory');
-          } else if (nav === 'support') {
-            openModal('modalSupport');
-          }
-        });
-      });
-
-      $('btnDoTopup').addEventListener('click', async () => {
-        const amount = Number($('topupAmount').value || 0);
-        try {
-          const data = await api('/api/topup/request', { method: 'POST', body: { amount, note: $('topupNote').value } });
-          $('topupHint').innerHTML =
-            `<span style="color:#68ff9b;">✅ Đã gửi yêu cầu. Mã tham chiếu: <span class="mono">${data.ref_code}</span>. Vui lòng chuyển khoản và ghi mã này vào nội dung, admin sẽ duyệt và cộng số dư.</span>`;
-        } catch (e) { $('topupHint').innerHTML = `<span style="color:#ff8c8c;">${escapeHtml(e.message)}</span>`; }
-      });
-
-      async function renderHistory() {
-        const data = await api('/api/history');
-        if (!data.items.length) { $('historyWrap').innerHTML = '<div class="hint">Chưa có lịch sử.</div>'; return; }
-        const rows = data.items.map(item => {
-          const amt = (item.amount || item.amount === 0) ? (item.amount >= 0 ? `+${fmtMoney(item.amount)}` :
-            `-${fmtMoney(Math.abs(item.amount))}`) : '-';
-          const color = item.amount > 0 ? '#68ff9b' : (item.amount < 0 ? '#ff8c8c' : '#aaa');
-          return `<tr><td>${escapeHtml(item.title)}</td><td style="color:${color};font-weight:800;">${amt}</td><td>${new Date(item.created_at).toLocaleString('vi-VN')}</td><td class="mono" style="color:#bdbdbd;">${escapeHtml(item.detail || '')}</td></tr>`;
-        }).join('');
-        $('historyWrap').innerHTML =
-          `<table class="table"><thead><tr><th>Sự kiện</th><th>Số tiền</th><th>Thời gian</th><th>Chi tiết</th></tr></thead><tbody>${rows}</tbody></table>`;
-      }
-
-      $('btnSendSupport').addEventListener('click', async () => {
-        const msg = $('supportMsg').value.trim();
-        if (!msg) return;
-        await api('/api/support', { method: 'POST', body: { message: msg } });
-        $('supportMsg').value = '';
-        closeModal('modalSupport');
-        alert('✅ Đã gửi.');
-      });
-
-      document.querySelectorAll('.filter-btn[data-filter]').forEach(btn => {
-        btn.addEventListener('click', () => {
-          document.querySelectorAll('.filter-btn[data-filter]').forEach(b => b.classList.remove('active'));
-          btn.classList.add('active');
-          activeFilter = btn.getAttribute('data-filter');
-          renderCards();
-        });
-      });
-      document.querySelectorAll('.filter-btn[data-type]').forEach(btn => {
-        btn.addEventListener('click', () => {
-          document.querySelectorAll('.filter-btn[data-type]').forEach(b => b.classList.remove('active'));
-          btn.classList.add('active');
-          activeType = btn.getAttribute('data-type');
-          renderCards();
-        });
-      });
-      $('searchInput').addEventListener('input', renderCards);
-
-      $('btnAdmin').addEventListener('click', async () => {
-        await renderAdmin();
-        openModal('modalAdmin');
-      });
-
-      async function renderAdmin() {
-        const data = await api('/api/admin/accounts');
-        const stock = data.items.filter(x => !x.sold);
-        const sold = data.items.filter(x => x.sold);
-        $('adminStockCount').textContent = stock.length;
-        $('adminSoldCount').textContent = sold.length;
-        $('adminTableWrap').innerHTML =
-          `<table class="table"><thead><tr><th>ID</th><th>Giá</th><th>Loại</th><th>Trạng thái</th><th>User/Pass</th></tr></thead><tbody>${
-            data.items.map(x => `<tr><td class="mono">${x.id}</td><td>${fmtMoney(x.price)}</td><td>${x.type}</td><td>${x.sold ? '<span style="color:#ff8c8c;">Đã bán</span>' : '<span style="color:#68ff9b;">Còn</span>'}</td><td class="mono">${escapeHtml(x.username)} / ${escapeHtml(x.password)}</td></tr>`).join('')
-          }</tbody></table>`;
-
-        const topups = await api('/api/admin/topups');
-        const pending = topups.items.filter(t => t.status === 'pending');
-        if (!pending.length) { $('adminTopupsWrap').innerHTML = '<div class="hint">Không có yêu cầu chờ duyệt.</div>'; return; }
-        $('adminTopupsWrap').innerHTML =
-          `<table class="table"><thead><tr><th>Email</th><th>Số tiền</th><th>Mã</th><th>Ghi chú</th><th>Duyệt</th></tr></thead><tbody>${
-            pending.map(t => `<tr><td>${escapeHtml(t.email)}</td><td>${fmtMoney(t.amount)}</td><td class="mono">${t.ref_code}</td><td>${escapeHtml(t.note || '')}</td><td>
-              <button class="btn btn-primary" style="padding:6px 10px;" data-approve="${t.id}">Duyệt</button>
-              <button class="btn btn-danger" style="padding:6px 10px;" data-reject="${t.id}">Từ chối</button>
-            </td></tr>`).join('')
-          }</tbody></table>`;
-
-        document.querySelectorAll('[data-approve]').forEach(b => b.addEventListener('click', async () => {
-          await api(`/api/admin/topups/${b.getAttribute('data-approve')}/approve`, { method: 'POST' });
-          await renderAdmin();
-        }));
-        document.querySelectorAll('[data-reject]').forEach(b => b.addEventListener('click', async () => {
-          await api(`/api/admin/topups/${b.getAttribute('data-reject')}/reject`, { method: 'POST' });
-          await renderAdmin();
-        }));
-      }
-
-      $('btnImportTxt').addEventListener('click', async () => {
-        const file = $('adminTxt').files[0];
-        if (!file) { alert('Chưa chọn file.'); return; }
-        const text = await file.text();
-        const data = await api('/api/admin/import', { method: 'POST', body: { text } });
-        alert(`✅ Import thành công ${data.count} acc.`);
-        $('adminTxt').value = '';
-        await renderAdmin();
-        await loadInventory();
-        await refreshStats();
-      });
-
-      (async function init() {
-        // Khởi tạo inventory với mock data
-        inventory = mockAccounts.map(acc => ({ ...acc, sold: false }));
-        await refreshMe();
-        await loadInventory();
-        await refreshStats();
-      })();
-    })();
-  </script>
+  resize();
+  init();
+  draw();
+</script>
 </body>
 </html>
