@@ -1,1 +1,0 @@
-const g=document.getElementById("fileGrid");FILE_ITEMS.forEach(f=>g.innerHTML+=`<p>${f.title} - <a href="${f.url}" target="_blank">Tải file</a></p>`);
