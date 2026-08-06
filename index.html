@@ -1,51 +1,179 @@
 <!DOCTYPE html>
 <html lang="vi">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<title>ZENO REGEDIT | Chia sẻ File</title>
-<link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ZENO REGEDIT • Xác minh & Tải File</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: 'Segoe UI', system-ui, sans-serif;
+      background: #0a0c0f;
+      color: #e0e0e0;
+      min-height: 100vh;
+      display: flex; align-items: center; justify-content: center;
+      padding: 20px;
+      background-image:
+        radial-gradient(ellipse at 20% 50%, rgba(0,200,255,0.04) 0%, transparent 55%),
+        radial-gradient(ellipse at 80% 20%, rgba(180,0,255,0.04) 0%, transparent 55%);
+    }
+    .card {
+      max-width: 750px; width: 100%;
+      background: rgba(15,18,22,0.85);
+      backdrop-filter: blur(18px);
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 32px;
+      padding: 35px 30px;
+      box-shadow: 0 30px 50px rgba(0,0,0,0.7);
+      text-align: center;
+    }
+    .header h1 { font-size: 2.5rem; font-weight: 700; background: linear-gradient(135deg, #fff, #a0e9ff); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+    .discord-box {
+      background: #1e2030; border: 1px solid #5865F2; border-radius: 20px;
+      padding: 18px; margin: 20px 0; display: flex; align-items: center;
+      justify-content: space-between; flex-wrap: wrap; gap: 15px;
+    }
+    .discord-btn {
+      background: #5865F2; color: white; padding: 10px 22px; border-radius: 30px;
+      font-weight: bold; text-decoration: none; display: flex; align-items: center; gap: 8px;
+    }
+    .youtube-btn, .verify-btn {
+      background: #ff0000; color: white; border: none; padding: 14px 28px;
+      border-radius: 30px; font-weight: bold; cursor: pointer; text-decoration: none;
+      display: inline-flex; align-items: center; gap: 8px; margin: 8px;
+      font-size: 1rem; transition: 0.2s;
+    }
+    .verify-btn { background: #2ecc71; }
+    .countdown-box { font-size: 2.5rem; font-weight: 700; color: #00e6ff; margin: 25px 0; }
+    .hidden { display: none; }
+    .file-item {
+      background: rgba(20,24,30,0.8); border-radius: 20px; padding: 18px 22px;
+      display: flex; align-items: center; justify-content: space-between;
+      margin-bottom: 12px; border: 1px solid rgba(255,255,255,0.06); text-align: left;
+    }
+    .file-info i { font-size: 1.6rem; color: #4fbfe8; margin-right: 14px; }
+    .file-name { font-weight: 600; }
+    .download-link {
+      background: #00e6ff; color: #000; border: none; padding: 10px 22px;
+      border-radius: 30px; font-weight: bold; cursor: pointer; text-decoration: none;
+      display: inline-flex; align-items: center; gap: 6px;
+    }
+    footer { margin-top: 25px; color: #4e5565; font-size: 0.8rem; }
+  </style>
 </head>
 <body>
-<header class="hero">
-<h1>ZENO REGEDIT</h1>
-<p>CHIA SẺ FILE</p>
-<a class="btn" href="https://discord.gg/TamUEZXEpG" target="_blank">👨‍🔧 Discord hỗ trợ</a>
-</header>
+  <div class="card">
+    <div class="header">
+      <i class="fas fa-shield-haltered" style="font-size:3rem; color:#00e6ff;"></i>
+      <h1>CHIA SẺ FILE</h1>
+      <p>ZENO REGEDIT 👨‍🔧</p>
+    </div>
 
-<main class="container">
-<input id="search" placeholder="Tìm kiếm file...">
+    <div class="discord-box">
+      <span><i class="fab fa-discord" style="color:#5865F2; font-size:1.8rem;"></i> <strong>DISCORD HỖ TRỢ</strong></span>
+      <a href="https://discord.gg/TamUEZXEpG" target="_blank" class="discord-btn"><i class="fas fa-headset"></i> VÀO DISCORD</a>
+    </div>
 
-<div id="files" class="grid">
-<div class="card">
-<h3>DATA Nhẹ Tâm</h3>
-<button onclick="openLink('https://link4m.net/kvOiP')">Tải xuống</button>
-</div>
+    <!-- KHU VỰC XÁC MINH -->
+    <div id="verifySection">
+      <h3><i class="fab fa-youtube"></i> XÁC MINH ĐỂ TẢI FILE</h3>
+      <p>👉 Bấm nút bên dưới, <strong>Đăng ký kênh</strong> YouTube, sau đó quay lại đây.</p>
+      <a href="https://youtube.com/@taine677?si=bfpznH3ppNZCCuLd" target="_blank" class="youtube-btn" id="openYTBtn">
+        <i class="fab fa-youtube"></i> MỞ KÊNH & ĐĂNG KÝ
+      </a>
+      <br>
+      <button id="confirmSubBtn" class="verify-btn"><i class="fas fa-check-circle"></i> TÔI ĐÃ ĐĂNG KÝ</button>
+    </div>
 
-<div class="card">
-<h3>Định vị</h3>
-<button onclick="openLink('https://link4m.net/hOdYuTP')">Tải xuống</button>
-</div>
+    <!-- ĐẾM NGƯỢC 10 GIÂY -->
+    <div id="countdownSection" class="hidden">
+      <p>⏳ Vui lòng đợi <strong><span id="timer">10</span> giây</strong> để mở khóa file...</p>
+      <div class="countdown-box" id="timerDisplay">10</div>
+    </div>
 
-<div class="card">
-<h3>AIMLOCK</h3>
-<button onclick="openLink('https://link4m.org/ikWNEz')">Tải xuống</button>
-</div>
+    <!-- DANH SÁCH FILE (sau khi mở khóa) -->
+    <div id="fileSection" class="hidden">
+      <div class="section-title" style="text-align:left; margin:20px 0;">
+        <i class="fas fa-folder-open"></i> DANH MỤC FILE
+      </div>
+      <div id="fileList"></div>
+    </div>
 
-<div class="card">
-<h3>Nhẹ Tâm 200K</h3>
-<button onclick="openLink('https://link4m.org/pZzEr')">Tải xuống</button>
-</div>
-</div>
+    <footer>© 2026 ZENO REGEDIT</footer>
+  </div>
 
-<section class="support">
-<h2>Cần hỗ trợ?</h2>
-<p>Hãy tham gia Discord để được hỗ trợ nhanh nhất.</p>
-<a class="btn" href="https://discord.gg/TamUEZXEpG" target="_blank">Vào Discord</a>
-<a class="btn" href="https://youtube.com/@taine677?si=bfpznH3ppNZCCuLd" target="_blank">Ủng hộ YouTube</a>
-</section>
-</main>
+  <script>
+    // 📦 Mảng file - CẬP NHẬT từ Admin
+    const files = [
+      { name: "DATA Nhẹ Tâm", icon: "fa-database", link: "https://link4m.net/kvOiP" },
+      { name: "Định vị (Tải Full)", icon: "fa-map-marker-alt", link: "https://link4m.net/hOdYuTP" },
+      { name: "AIMLOCK", icon: "fa-crosshairs", link: "https://link4m.org/ikWNEz" },
+      { name: "Nhẹ Tâm 200k", icon: "fa-gem", link: "https://link4m.org/pZzEr" }
+    ];
 
-<script src="script.js"></script>
+    const verifySection = document.getElementById('verifySection');
+    const countdownSection = document.getElementById('countdownSection');
+    const fileSection = document.getElementById('fileSection');
+    const timerSpan = document.getElementById('timer');
+    const timerDisplay = document.getElementById('timerDisplay');
+    const fileListDiv = document.getElementById('fileList');
+
+    // Kiểm tra trạng thái đã mở khóa (lưu session)
+    if (sessionStorage.getItem('zeno_unlocked') === 'true') {
+      verifySection.classList.add('hidden');
+      countdownSection.classList.add('hidden');
+      fileSection.classList.remove('hidden');
+      renderFiles();
+    }
+
+    // Xử lý nút "TÔI ĐÃ ĐĂNG KÝ"
+    document.getElementById('confirmSubBtn').addEventListener('click', () => {
+      verifySection.classList.add('hidden');
+      countdownSection.classList.remove('hidden');
+      startCountdown(10);
+    });
+
+    function startCountdown(seconds) {
+      let remaining = seconds;
+      timerSpan.textContent = remaining;
+      timerDisplay.textContent = remaining;
+      const interval = setInterval(() => {
+        remaining--;
+        timerSpan.textContent = remaining;
+        timerDisplay.textContent = remaining;
+        if (remaining <= 0) {
+          clearInterval(interval);
+          // Mở khóa
+          sessionStorage.setItem('zeno_unlocked', 'true');
+          // Tạo token ngẫu nhiên để bảo vệ link download
+          const token = Math.random().toString(36).substring(2, 15) + Date.now().toString(36);
+          sessionStorage.setItem('zeno_token', token);
+          countdownSection.classList.add('hidden');
+          fileSection.classList.remove('hidden');
+          renderFiles();
+        }
+      }, 1000);
+    }
+
+    function renderFiles() {
+      fileListDiv.innerHTML = '';
+      const token = sessionStorage.getItem('zeno_token') || 'no-token';
+      files.forEach((file, index) => {
+        const div = document.createElement('div');
+        div.className = 'file-item';
+        div.innerHTML = `
+          <div class="file-info">
+            <i class="fas ${file.icon}"></i>
+            <span class="file-name">${file.name}</span>
+          </div>
+          <a href="download.html?file=${index}&token=${token}" class="download-link" target="_blank">
+            <i class="fas fa-download"></i> TẢI XUỐNG
+          </a>
+        `;
+        fileListDiv.appendChild(div);
+      });
+    }
+  </script>
 </body>
 </html>
