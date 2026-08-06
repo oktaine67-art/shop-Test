@@ -29,7 +29,7 @@
   </div>
 
   <script>
-    // Cùng mảng files với index.html (sẽ được cập nhật từ admin)
+    // Cùng mảng files với index.html
     const files = [
       { name: "DATA Nhẹ Tâm", icon: "fa-database", link: "https://link4m.net/kvOiP" },
       { name: "Định vị (Tải Full)", icon: "fa-map-marker-alt", link: "https://link4m.net/hOdYuTP" },
@@ -45,7 +45,6 @@
     const errorEl = document.getElementById('errorMsg');
     const fileInfoEl = document.getElementById('fileInfo');
 
-    // Kiểm tra token hợp lệ từ session (phải khớp với token đã tạo ở index)
     const storedToken = sessionStorage.getItem('zeno_token');
     const isUnlocked = sessionStorage.getItem('zeno_unlocked') === 'true';
 
