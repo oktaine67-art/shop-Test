@@ -119,7 +119,7 @@
     const timerDisplay = document.getElementById('timerDisplay');
     const fileListDiv = document.getElementById('fileList');
 
-    // Kiểm tra trạng thái đã mở khóa (lưu session)
+    // Kiểm tra nếu đã có token trong session (đã mở khóa trước đó)
     if (sessionStorage.getItem('zeno_unlocked') === 'true') {
       verifySection.classList.add('hidden');
       countdownSection.classList.add('hidden');
@@ -144,10 +144,9 @@
         timerDisplay.textContent = remaining;
         if (remaining <= 0) {
           clearInterval(interval);
-          // Mở khóa
-          sessionStorage.setItem('zeno_unlocked', 'true');
-          // Tạo token ngẫu nhiên để bảo vệ link download
+          // Tạo token ngẫu nhiên
           const token = Math.random().toString(36).substring(2, 15) + Date.now().toString(36);
+          sessionStorage.setItem('zeno_unlocked', 'true');
           sessionStorage.setItem('zeno_token', token);
           countdownSection.classList.add('hidden');
           fileSection.classList.remove('hidden');
@@ -158,7 +157,7 @@
 
     function renderFiles() {
       fileListDiv.innerHTML = '';
-      const token = sessionStorage.getItem('zeno_token') || 'no-token';
+      const token = sessionStorage.getItem('zeno_token') || 'notoken';
       files.forEach((file, index) => {
         const div = document.createElement('div');
         div.className = 'file-item';
